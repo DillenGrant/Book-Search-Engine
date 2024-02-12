@@ -1,10 +1,23 @@
-import React, { useState } from 'react';
-import { Form, Button, Alert } from 'react-bootstrap';
+import React from 'react';
+import { useMutation } from '@apollo/client';
+import { ADD_USER } from './mutations';
 
-import Auth from '../utils/auth';
-import { useMutation } from '@apollo/react-hooks';
-import { ADD_USER } from '../utils/mutations';
+function SignupForm() {
+  const [addUser] = useMutation(ADD_USER);
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const { username, email, password } = event.target.elements;
+
+    try {
+      const { data } = await addUser({
+        variables: { username: username.value, email: email.value, password: password.value },
+      });
+      // Handle successful signup
+    } catch (error) {
+      console.error('Error signing up:', error);
+    }
+  };  
 
 const SignupForm = () => {
   // set initial form state
@@ -105,6 +118,7 @@ const SignupForm = () => {
       </Form>
     </>
   );
+}
 };
 
 export default SignupForm;
