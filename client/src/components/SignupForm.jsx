@@ -1,9 +1,38 @@
 import React from 'react';
 import { useMutation } from '@apollo/client';
 import { ADD_USER } from './mutations';
+import { useQuery } from '@apollo/client';
+import { GET_ME, DELETE_BOOK } from './queries'; // Assuming DELETE_BOOK is the correct mutation
 
-function SignupForm() {
-  const [addUser] = useMutation(ADD_USER);
+import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
+import Auth from '../utils/auth';
+
+const SavedBooks = () => {
+  const { loading, error, data } = useQuery(GET_ME);
+  const [deleteBook] = useMutation(DELETE_BOOK); // Use the correct mutation name
+
+  const userData = data?.me || {};
+
+  const handleDeleteBook = async (bookId) => {
+    try {
+      await deleteBook({
+        variables: { bookId },
+        update: (cache) => {
+          const data = cache.readQuery({ query: GET_ME });
+          const userDataCache = data.me;
+          const savedBooksCache = userDataCache.savedBooks;
+          const updatedBookCache = savedBooksCache.filter((book) => book.bookId !== bookId);
+          data.me.savedBooks = updatedBookCache;
+          cache.writeQuery({ query: GET_ME, data });
+        }
+      });
+      // upon success, remove book's id from localStorage
+      removeBookId(bookId);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -121,4 +150,4 @@ const SignupForm = () => {
 }
 };
 
-export default SignupForm;
+export default SavedBooks;
