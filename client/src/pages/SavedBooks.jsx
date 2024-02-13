@@ -1,9 +1,9 @@
 import React from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { ADD_USER } from '../utils/mutations';
-import { GET_ME, DELETE_BOOK } from '../utils/queries'; // Assuming DELETE_BOOK is the correct mutation
+import { GET_ME,} from '../utils/queries';
+import { Container, Card, Button } from 'react-bootstrap';
 
-import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 const SignupForm = () => {
   // set initial form state
   const [userFormData, setUserFormData] = useState({ username: '', email: '', password: '' });

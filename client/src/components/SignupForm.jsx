@@ -2,9 +2,9 @@ import React from 'react';
 import { useMutation } from '@apollo/client';
 import { ADD_USER } from '../utils/mutations';
 import { useQuery } from '@apollo/client';
-import { GET_ME, DELETE_BOOK } from '../utils/queries'; // Assuming DELETE_BOOK is the correct mutation
+import { GET_ME,} from '../utils/queries';
 
-import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
+import { Container, Card, Button } from 'react-bootstrap';
 import Auth from '../utils/auth';
 
 const SavedBooks = () => {
