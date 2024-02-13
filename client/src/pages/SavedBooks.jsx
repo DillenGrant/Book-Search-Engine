@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import { ADD_USER } from './mutations';
-import { GET_ME, DELETE_BOOK } from './queries'; // Assuming DELETE_BOOK is the correct mutation
+import { ADD_USER } from '../utils/mutations';
+import { GET_ME, DELETE_BOOK } from '../utils/queries'; // Assuming DELETE_BOOK is the correct mutation
 
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 const SignupForm = () => {
