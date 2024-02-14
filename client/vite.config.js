@@ -18,5 +18,4 @@ export default {
       }
     }
   }
-  // ... other configurations
 };
