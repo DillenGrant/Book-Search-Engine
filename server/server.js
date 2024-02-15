@@ -1,10 +1,12 @@
 const express = require('express');
 const path = require('path');
 const db = require('./config/connection');
+const { authMiddleware } = require('./utils/auth');
 
 
 const PORT = process.env.PORT || 3001;
-const app = exprecss();
+const app = express();
+app.use(authMiddleware);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
