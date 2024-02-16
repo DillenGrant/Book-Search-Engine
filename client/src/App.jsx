@@ -6,6 +6,7 @@ import SearchBooks from './pages/SearchBooks';
 import SavedBooks from './pages/SavedBooks';
 import SignupForm from './components/SignupForm';
 import LoginForm from './components/LoginForm';
+import AppNavbar from './components/Navbar';
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 
 const client = new ApolloClient({
@@ -17,6 +18,7 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <Router>
+        <AppNavbar />
         <Routes>
           <Route path="/" element={<SearchBooks />} />
           <Route path="/search" element={<SearchBooks />} />

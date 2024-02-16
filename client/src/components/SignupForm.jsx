@@ -1,61 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react'; // Import useState from React
 import { useMutation } from '@apollo/client';
 import { ADD_USER } from '../utils/mutations';
-import { useQuery } from '@apollo/client';
-import { GET_ME,} from '../utils/queries';
-
-import { Container, Card, Button } from 'react-bootstrap';
+import { Button, Form, Alert } from 'react-bootstrap';
 import Auth from '../utils/auth';
 
-const SavedBooks = () => {
-  const { loading, error, data } = useQuery(GET_ME);
-  const [deleteBook] = useMutation(DELETE_BOOK); // Use the correct mutation name
-
-  const userData = data?.me || {};
-
-  const handleDeleteBook = async (bookId) => {
-    try {
-      await deleteBook({
-        variables: { bookId },
-        update: (cache) => {
-          const data = cache.readQuery({ query: GET_ME });
-          const userDataCache = data.me;
-          const savedBooksCache = userDataCache.savedBooks;
-          const updatedBookCache = savedBooksCache.filter((book) => book.bookId !== bookId);
-          data.me.savedBooks = updatedBookCache;
-          cache.writeQuery({ query: GET_ME, data });
-        }
-      });
-      // upon success, remove book's id from localStorage
-      removeBookId(bookId);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const { username, email, password } = event.target.elements;
-
-    try {
-      const { data } = await addUser({
-        variables: { username: username.value, email: email.value, password: password.value },
-      });
-      // Handle successful signup
-    } catch (error) {
-      console.error('Error signing up:', error);
-    }
-  };  
-
 const SignupForm = () => {
-  // set initial form state
   const [userFormData, setUserFormData] = useState({ username: '', email: '', password: '' });
-  // set state for form validation
-  const [validated] = useState(false);
-  // set state for alert
+  const [validated, setValidated] = useState(false); // Initialize validated state
   const [showAlert, setShowAlert] = useState(false);
-  // define mutation for adding a user
   const [createUser] = useMutation(ADD_USER);
 
   const handleInputChange = (event) => {
@@ -64,7 +16,7 @@ const SignupForm = () => {
   };
 
   const handleFormSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
     // check if form has everything (as per react-bootstrap docs)
     const form = event.currentTarget;
@@ -93,7 +45,6 @@ const SignupForm = () => {
 
   return (
     <>
-      {/* This is needed for the validation functionality above */}
       <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
         {/* show alert if server response is bad */}
         <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
@@ -146,8 +97,7 @@ const SignupForm = () => {
         </Button>
       </Form>
     </>
-  );
-}
+  ); 
 };
 
-export default SavedBooks;
+export default SignupForm;

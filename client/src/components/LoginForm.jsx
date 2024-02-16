@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../utils/mutations';
 import { Form, Button, Alert } from 'react-bootstrap';
@@ -6,25 +6,8 @@ import Auth from '../utils/auth';
 
 function LoginForm() {
   const [loginUser] = useMutation(LOGIN_USER);
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const { email, password } = event.target.elements;
-
-    try {
-      const { data } = await loginUser({
-        variables: { email: email.value, password: password.value },
-      });
-      Auth.login(data.loginUser.token);
-    } catch (error) {
-      console.error('Error logging in:', error);
-    }
-  };
-
-
-const LoginForm = () => {
+  const [validated, setValidated] = useState(false); // Initialize validated state
   const [userFormData, setUserFormData] = useState({ email: '', password: '' });
-  const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
   const handleInputChange = (event) => {
@@ -59,7 +42,6 @@ const LoginForm = () => {
       password: '',
     });
   };
-  }
 
   return (
     <>
